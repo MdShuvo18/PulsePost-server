@@ -28,7 +28,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
 
-        // const blogCollection = client.db('blogCollection').collection('blogCollection');
+        const blogCollection = client.db('blogCollection').collection('blogCollection');
 
 
         // Send a ping to confirm a successful connection
