@@ -44,6 +44,8 @@ async function run() {
             res.send(result)
         })
 
+       
+
         app.post('/addBlogCollection', async (req, res) => {
             const result = await blogCollection.insertOne(req.body)
             res.send(result)
@@ -78,6 +80,31 @@ async function run() {
         app.get('/comment', async (req, res) => {
             const result = await commentCollection.find({}).toArray()
             res.send(result)
+        })
+
+        // update blogs section
+
+        app.get('/addBlogCollection/:id', async (req, res) => {
+            const result = await blogCollection.findOne({ _id: new ObjectId(req.params.id) })
+            res.send(result)
+        })
+
+        app.put('/addBlogCollection/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedItem = req.body;
+            const Item = {
+                $set: {
+                    title: updatedItem.title,
+                    image: updatedItem.image,
+                    short_description: updatedItem.short_description,
+                    long_description: updatedItem.long_description,
+                    category: updatedItem.category,
+                }
+            }
+            const result = await blogCollection.updateOne(filter, Item, options);
+            res.send(result);
         })
 
 
