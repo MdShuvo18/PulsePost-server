@@ -29,6 +29,8 @@ async function run() {
         // await client.connect();
 
         const blogCollection = client.db('blogCollection').collection('blogCollection')
+        const wishListCollection = client.db('blogCollection').collection('wishListCollection')
+        const commentCollection = client.db('blogCollection').collection('commentCollection')
 
 
         app.get('/blogdetails/:id', async (req, res) => {
@@ -44,7 +46,38 @@ async function run() {
 
         app.post('/addBlogCollection', async (req, res) => {
             const result = await blogCollection.insertOne(req.body)
-            res.json(result)
+            res.send(result)
+        })
+
+        // wishList post
+        app.get('/wishlist/:id', async (req, res) => {
+            let query = {};
+            if (req.query?.id) {
+                query = { _id: new ObjectId(req.query.id) }
+            }
+            const result = await blogCollection.find(query).toArray()
+            res.send(result)
+        })
+
+
+        app.get('/addWishListCollection', async (req, res) => {
+            const result = await wishListCollection.find({}).toArray()
+            res.send(result)
+        })
+        app.post('/addWishListCollection', async (req, res) => {
+            const result = await wishListCollection.insertOne(req.body)
+            res.send(result)
+        })
+
+        // comment section
+        app.post('/comment', async (req, res) => {
+            const result = await commentCollection.insertOne(req.body)
+            res.send(result)
+        })
+
+        app.get('/comment', async (req, res) => {
+            const result = await commentCollection.find({}).toArray()
+            res.send(result)
         })
 
 
