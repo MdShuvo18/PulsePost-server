@@ -40,6 +40,7 @@ async function run() {
         })
 
         app.get('/addBlogCollection', async (req, res) => {
+          
             const result = await blogCollection.find({}).toArray()
             res.send(result)
         })
@@ -51,25 +52,22 @@ async function run() {
             res.send(result)
         })
 
-        // wishList post
-        app.get('/wishlist/:id', async (req, res) => {
-            let query = {};
-            if (req.query?.id) {
-                query = { _id: new ObjectId(req.query.id) }
+      
+        // wishlistCollection.
+        app.get('/wishlist', async (req, res) => {
+              let query={}
+            if (req.query.userEmail) {
+                query = { userEmail: req.query.userEmail }
             }
-            const result = await blogCollection.find(query).toArray()
+            const result = await wishListCollection.find(query).toArray()
             res.send(result)
         })
-
-
-        app.get('/addWishListCollection', async (req, res) => {
-            const result = await wishListCollection.find({}).toArray()
-            res.send(result)
-        })
-        app.post('/addWishListCollection', async (req, res) => {
+        
+        app.post('/wishlist',async (req, res) => {
             const result = await wishListCollection.insertOne(req.body)
-            res.send(result)
+            res.send(result);
         })
+
 
         // comment section
         app.post('/comment', async (req, res) => {
