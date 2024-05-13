@@ -62,6 +62,16 @@ async function run() {
             const result = await wishListCollection.find(query).toArray()
             res.send(result)
         })
+
+        app.get('/wishlist/:id', async (req, res) => {
+            const result = await wishListCollection.findOne({ _id: new ObjectId(req.params.id) })
+            res.send(result)
+        })
+
+        app.delete('/wishlist/:id', async (req, res) => {
+            const result = await wishListCollection.deleteOne({ _id: new ObjectId(req.params.id) })
+            res.send(result)
+        })
         
         app.post('/wishlist',async (req, res) => {
             const result = await wishListCollection.insertOne(req.body)
@@ -69,6 +79,7 @@ async function run() {
         })
 
 
+        
         // comment section
         app.post('/comment', async (req, res) => {
             const result = await commentCollection.insertOne(req.body)
